@@ -1,0 +1,125 @@
+﻿<Window x:Class="ConsoleAppPrompt.UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ConsoleAppPrompt.UI"
+        mc:Ignorable="d"
+        Title="Peg Solitaire Solver" Height="700" Width="900"
+        WindowStartupLocation="CenterScreen">
+    
+    <Window.Resources>
+        <Style x:Key="PegButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="50"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BorderBrush" Value="DarkGray"/>
+            <Style.Triggers>
+                <Trigger Property="Content" Value="●">
+                    <Setter Property="Background" Value="SaddleBrown"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+                <Trigger Property="Content" Value="○">
+                    <Setter Property="Background" Value="LightGray"/>
+                    <Setter Property="Foreground" Value="Gray"/>
+                </Trigger>
+                <Trigger Property="Content" Value="">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="IsEnabled" Value="False"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style x:Key="ControlButtonStyle" TargetType="Button">
+            <Setter Property="MinWidth" Value="100"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Background" Value="LightSteelBlue"/>
+            <Setter Property="BorderBrush" Value="SteelBlue"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="300"/>
+        </Grid.ColumnDefinitions>
+        
+        <!-- Game Board -->
+        <Grid Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock Grid.Row="0" Text="Peg Solitaire Board" 
+                       FontSize="24" FontWeight="Bold" 
+                       HorizontalAlignment="Center" Margin="0,0,0,20"/>
+            
+            <UniformGrid Grid.Row="1" x:Name="BoardGrid" 
+                         Rows="7" Columns="7" 
+                         HorizontalAlignment="Center" 
+                         VerticalAlignment="Center"/>
+        </Grid>
+        
+        <!-- Control Panel -->
+        <Border Grid.Column="1" Background="SkyBlue" BorderBrush="DeepSkyBlue" BorderThickness="1" Margin="10">
+            <StackPanel Margin="15">
+                <TextBlock Text="Game Controls" FontSize="18" FontWeight="Bold" 
+                           HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                
+                <!-- Game Statistics -->
+                <GroupBox Header="Game Statistics" Margin="0,0,0,15">
+                    <StackPanel>
+                        <TextBlock x:Name="PegsRemainingText" Text="Pegs Remaining: 32" Margin="5"/>
+                        <TextBlock x:Name="MovesPlayedText" Text="Moves Played: 0" Margin="5"/>
+                        <TextBlock x:Name="SolutionTimeText" Text="Solution Time: --" Margin="5"/>
+                    </StackPanel>
+                </GroupBox>
+                
+                <!-- Game Controls -->
+                <GroupBox Header="Actions" Margin="0,0,0,15">
+                    <StackPanel>
+                        <Button x:Name="SolveButton" Content="Solve Puzzle" 
+                                Style="{StaticResource ControlButtonStyle}"
+                                Click="SolveButton_Click"/>
+                        <Button x:Name="ResetButton" Content="Reset Board" 
+                                Style="{StaticResource ControlButtonStyle}"
+                                Click="ResetButton_Click"/>
+                        <Button x:Name="NextMoveButton" Content="Next Move" 
+                                Style="{StaticResource ControlButtonStyle}"
+                                Click="NextMoveButton_Click" 
+                                IsEnabled="False"/>
+                        <Button x:Name="PlayAllButton" Content="Play All Moves" 
+                                Style="{StaticResource ControlButtonStyle}"
+                                Click="PlayAllButton_Click" 
+                                IsEnabled="False"/>
+                    </StackPanel>
+                </GroupBox>
+                
+                <!-- Solution Progress -->
+                <GroupBox Header="Solution Progress" Margin="0,0,0,15">
+                    <StackPanel>
+                        <TextBlock x:Name="SolutionStatusText" Text="No solution loaded" Margin="5"/>
+                        <ProgressBar x:Name="SolutionProgressBar" Height="20" Margin="5" 
+                                     Minimum="0" Maximum="100" Value="0"/>
+                        <TextBlock x:Name="CurrentMoveText" Text="" Margin="5" FontSize="10"/>
+                    </StackPanel>
+                </GroupBox>
+                
+                <!-- Solution Moves List -->
+                <GroupBox Header="Solution Moves">
+                    <ScrollViewer MaxHeight="200">
+                        <ListBox x:Name="MovesListBox" FontFamily="Consolas" FontSize="10"/>
+                    </ScrollViewer>
+                </GroupBox>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
